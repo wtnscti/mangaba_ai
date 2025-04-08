@@ -1,6 +1,6 @@
 # Mangaba AI - Framework de Automação com Agentes Inteligentes
 
-![Mangaba AI Logo](https://github.com/dheiver2/mangaba_ai/blob/main/img.png){: width="300"}
+<img src="https://github.com/dheiver2/mangaba_ai/blob/main/img.png" width="300">
 
 Framework Python para criação de equipes de agentes AI autônomos que colaboram para resolver tarefas complexas.
 
