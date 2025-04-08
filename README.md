@@ -1,5 +1,3 @@
-### README.md
-```markdown
 # Mangaba.AI - Orquestração de Agentes de IA no Google Colab
 
 **Mangaba.AI** é uma biblioteca avançada para orquestração de agentes de IA colaborativos, projetada para executar tarefas em sequência ou paralelo, com suporte a memória contextual e ferramentas externas. Esta implementação foi adaptada para o Google Colab, utilizando a API do Gemini (Google Generative AI) e integrando busca real via Google Search.
