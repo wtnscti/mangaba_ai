@@ -1,109 +1,94 @@
-Claro, Dheiver! Aqui está um `README.md` formatado em Markdown para o projeto **Mangaba.AI**, incluindo a logo e uma explicação clara sobre seu propósito, instalação e uso.
-
----
 
 ```markdown
-<p align="center">
-  <img src="https://github.com/dheiver2/mangaba_ai/blob/main/img.png" alt="Mangaba.AI Logo" width="300"/>
-</p>
+# Mangaba AI - Framework de Automação com Agentes Inteligentes
 
-<h1 align="center">Mangaba.AI 🍈</h1>
+![Mangaba AI Logo](https://github.com/dheiver2/mangaba_ai/blob/main/img.png)
 
-<p align="center">
-  Biblioteca avançada para orquestração de agentes de IA colaborativos.
-</p>
+Framework Python para criação de equipes de agentes AI autônomos que colaboram para resolver tarefas complexas.
 
----
+## ✨ Funcionalidades Principais
 
-## ✨ Visão Geral
+- **Arquitetura Multi-Agente**: Crie equipes de agentes especializados
+- **Memória Contextual**: Histórico individual e compartilhado entre agentes
+- **Integração Gemini**: Utilize os modelos mais avançados da Google
+- **Ferramentas Externas**: Busca no Google e outras APIs
+- **Gerenciamento de Tarefas**: Dependências e priorização automática
+- **Processamento Assíncrono**: Execução paralela para maior eficiência
 
-**Mangaba.AI** é uma biblioteca Python moderna para construção de sistemas com múltiplos agentes de inteligência artificial capazes de cooperar entre si em tarefas complexas. Inspirada por arquiteturas cognitivas e orquestração inteligente, permite a criação de pipelines robustos com memória contextual, busca web, modelos de linguagem e controle de tarefas com dependências.
+## 🚀 Começando
 
----
+### Pré-requisitos
+- Python 3.9+
+- Conta no Google AI Studio (para API key do Gemini)
+- Google Colab (recomendado) ou ambiente local
 
-## 🧠 Principais Recursos
-
-- 🔁 **Memória Contextual Compartilhada** (Global e Individual)
-- 🔧 **Integração com Ferramentas Externas**, como Google Search
-- 🤖 **Agentes Autônomos com Papéis Diferenciados**
-- 🔄 **Execução Sequencial com Controle de Dependência**
-- ⚡ **Compatível com Gemini API (Google Generative AI)**
-
----
-
-## 🛠️ Instalação
-
-No Google Colab, execute:
-
-```python
-!pip install -q google-generativeai googlesearch-python
+### Instalação
+```bash
+pip install google-generativeai googlesearch-python
 ```
 
----
-
-## 🔐 Configuração da API Gemini
-
-Adicione sua chave Gemini no Colab:
-
-1. Clique no ícone de chave (🔑) à esquerda.
-2. Adicione um novo segredo com o nome: `GEMINI_API_KEY`
-3. Cole sua chave da API do Google Generative AI.
-4. Reexecute a célula principal do notebook.
-
----
-
-## 🚀 Exemplo de Uso
-
+### Configuração
+1. Obtenha sua API key do Gemini
+2. Adicione no Colab Secrets como `GEMINI_API_KEY`
+3. Ou configure diretamente no código:
 ```python
-await main()
+API_KEY = "sua_chave_aqui"
+genai.configure(api_key=API_KEY)
 ```
 
-O sistema executa:
+## 📚 Exemplo de Uso
 
-1. **Pesquisador** → Busca dados sobre IA na saúde.
-2. **Analista** → Analisa os dados encontrados.
-3. **Escritor** → Gera um relatório executivo com os resultados.
+```python
+# Criação dos agentes
+memory = ContextualMemory()
+model = GeminiModel()
+search_tool = GoogleSearchTool()
 
----
+pesquisador = Agent(name="Pesquisador", 
+                   role="Busca dados", 
+                   model=model, 
+                   tools=[search_tool], 
+                   memory=memory)
 
-## 🧩 Estrutura de Agentes
+# Definição de tarefas
+tarefas = [
+    Task("Buscar inovações em IA", pesquisador, priority=2),
+    # ... outras tarefas
+]
 
-- **ContextualMemory**: Armazena e recupera contexto global e individual.
-- **GeminiModel**: Wrapper assíncrono para o modelo da Gemini API.
-- **GoogleSearchTool**: Permite buscas em tempo real.
-- **Agent**: Executor de tarefas com ferramentas e memória.
-- **Task**: Define uma tarefa com prioridade e dependências.
-- **Crew**: Orquestra a execução entre múltiplos agentes.
+# Execução
+equipe = Crew(agents=[pesquisador, ...], tasks=tarefas)
+await equipe.run()
+```
 
----
+## 🏗 Estrutura do Projeto
 
-## 🖼️ Logo
+```
+mangaba_ai/
+├── agents/          # Módulos de agentes especializados
+├── core/            # Componentes principais
+│   ├── memory.py    # Sistema de memória
+│   ├── models.py    # Integração com LLMs
+│   └── tasks.py     # Gerenciamento de tarefas
+├── tools/           # Ferramentas externas
+└── examples/        # Casos de uso exemplares
+```
 
-<div align="center">
-  <img src="https://github.com/dheiver2/mangaba_ai/blob/main/img.png" width="200"/>
-</div>
+## 🤝 Como Contribuir
 
----
-
-## 🤝 Contribuição
-
-Pull requests são bem-vindos! Sinta-se à vontade para abrir issues com sugestões e melhorias.
-
----
+1. Faça um fork do projeto
+2. Crie sua branch (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
+4. Push para a branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request
 
 ## 📄 Licença
 
-MIT © 2025 - Desenvolvido por Dheiver Santos e colaboradores.
+Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 
----
+## ✉️ Contato
 
-## 🌐 Links Úteis
+Dheiver Santos - [@dheiver](https://github.com/dheiver2) - dheiver.santos@gmail.com
 
-- [Google Generative AI](https://ai.google.dev)
-- [Python asyncio](https://docs.python.org/3/library/asyncio.html)
-- [Gemini Models](https://cloud.google.com/vertex-ai/docs/generative-ai/overview)
+Project Link: [https://github.com/dheiver2/mangaba_ai](https://github.com/dheiver2/mangaba_ai)
 ```
-
----
-
-Se quiser que eu salve isso como arquivo `.md` para você baixar ou adicionar diretamente no repositório, é só avisar!
