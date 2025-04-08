@@ -1,3 +1,6 @@
+Claro, Dheiver! Aqui está um `README.md` formatado em Markdown para o projeto **Mangaba.AI**, incluindo a logo e uma explicação clara sobre seu propósito, instalação e uso.
+
+---
 
 ```markdown
 <p align="center">
@@ -100,3 +103,7 @@ MIT © 2025 - Desenvolvido por Dheiver Santos e colaboradores.
 - [Python asyncio](https://docs.python.org/3/library/asyncio.html)
 - [Gemini Models](https://cloud.google.com/vertex-ai/docs/generative-ai/overview)
 ```
+
+---
+
+Se quiser que eu salve isso como arquivo `.md` para você baixar ou adicionar diretamente no repositório, é só avisar!
