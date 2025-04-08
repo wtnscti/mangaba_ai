@@ -1,5 +1,3 @@
-
-```markdown
 # Mangaba AI - Framework de Automação com Agentes Inteligentes
 
 ![Mangaba AI Logo](https://github.com/dheiver2/mangaba_ai/blob/main/img.png)
