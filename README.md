@@ -63,13 +63,13 @@ await equipe.run()
 
 ```
 mangaba_ai/
-├── agents/          # Módulos de agentes especializados
-├── core/            # Componentes principais
-│   ├── memory.py    # Sistema de memória
-│   ├── models.py    # Integração com LLMs
-│   └── tasks.py     # Gerenciamento de tarefas
-├── tools/           # Ferramentas externas
-└── examples/        # Casos de uso exemplares
+├── config/
+│   └── setup.py          # Configuração da API e dependências
+├── core/
+│   └── models.py         # Definições das classes principais
+├── cases/
+│   └── cases.py          # Casos de uso e execução
+└── requirements.txt      # Lista de dependências
 ```
 
 ## 🤝 Como Contribuir
