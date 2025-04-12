@@ -1,4 +1,22 @@
-[![PyPI version](https://badge.fury.io/py/mangaba.svg)](https://badge.fury.io/py/mangaba)
+Metadata-Version: 2.4
+Name: mangaba
+Version: 0.1.0
+Summary: Framework Python para criacao de equipes de agentes AI autonomos
+Home-page: https://github.com/dheiver2/mangaba_ai
+Author: Dheiver Santos
+Author-email: Dheiver Santos <dheiver.santos@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/dheiver2/mangaba_ai
+Project-URL: Bug Tracker, https://github.com/dheiver2/mangaba_ai/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Dynamic: author
+Dynamic: home-page
+Dynamic: requires-python
 
 # Mangaba - Framework de Automacao com Agentes Inteligentes
 
