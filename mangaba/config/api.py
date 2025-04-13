@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # mangaba/config/api.py
-# Configuracao da API do Gemini para uso fora do Google Colab
+# Configuração da API do Gemini para uso fora do Google Colab
 
 try:
     import google.generativeai as genai
 except ImportError:
     raise ImportError(
-        "O pacote 'google-generativeai' nao esta instalado. "
-        "Execute 'pip install google-generativeai' para instala-lo."
+        "O pacote 'google-generativeai' não está instalado. "
+        "Execute 'pip install google-generativeai' para instalá-lo."
     )
 
 def configure_api(api_key: str):
@@ -18,14 +18,14 @@ def configure_api(api_key: str):
         api_key (str): Chave de API do Gemini
         
     Returns:
-        bool: True se a configuracao foi bem-sucedida
+        bool: True se a configuração foi bem-sucedida
         
     Raises:
-        ValueError: Se a chave de API for invalida
+        ValueError: Se a chave de API for inválida
     """
     if not api_key:
         raise ValueError(
-            "A chave da API nao pode estar vazia. "
+            "A chave da API não pode estar vazia. "
             "Obtenha uma chave em: https://ai.google.dev/"
         )
         

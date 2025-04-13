@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # mangaba/core/models.py
-# Definicoes das classes principais do Mangaba
+# Definições das classes principais do Mangaba
 
 import asyncio
 from typing import List, Optional, Dict
@@ -10,19 +10,19 @@ try:
     import google.generativeai as genai
 except ImportError:
     raise ImportError(
-        "O pacote 'google-generativeai' nao esta instalado. "
-        "Execute 'pip install google-generativeai' para instala-lo."
+        "O pacote 'google-generativeai' não está instalado. "
+        "Execute 'pip install google-generativeai' para instalá-lo."
     )
 
 try:
     from googlesearch import search
 except ImportError:
     raise ImportError(
-        "O pacote 'googlesearch-python' nao esta instalado. "
-        "Execute 'pip install googlesearch-python' para instala-lo."
+        "O pacote 'googlesearch-python' não está instalado. "
+        "Execute 'pip install googlesearch-python' para instalá-lo."
     )
 
-# ContextualMemory (com memoria global)
+# ContextualMemory (com memória global)
 class ContextualMemory:
     def __init__(self, max_context_size: int = 10):
         self.individual_data: Dict[str, List[str]] = {}
@@ -55,7 +55,7 @@ class GeminiModel:
 
     async def generate(self, prompt: str) -> str:
         try:
-            await asyncio.sleep(0.5)  # Simula latencia
+            await asyncio.sleep(0.5)  # Simula latência
             response = self.model.generate_content(
                 prompt,
                 generation_config=genai.types.GenerationConfig(
@@ -65,12 +65,12 @@ class GeminiModel:
             )
             return response.text
         except Exception as e:
-            return f"Erro na geracao: {str(e)}"
+            return f"Erro na geração: {str(e)}"
 
 # GoogleSearchTool (busca real)
 class GoogleSearchTool:
     async def run(self, query: str) -> str:
-        await asyncio.sleep(0.3)  # Simula latencia de rede
+        await asyncio.sleep(0.3)  # Simula latência de rede
         try:
             results = list(search(query, num_results=3))
             return f"Resultados da busca: {', '.join(results)}"
@@ -91,7 +91,7 @@ class Agent:
 
         individual_context = self.memory.retrieve_individual(self.name) if self.memory else []
         global_context = self.memory.retrieve_global() if self.memory else []
-        deps_text = f"Dependencias: {dependencies}" if dependencies else ""
+        deps_text = f"Dependências: {dependencies}" if dependencies else ""
         enriched_input = (
             f"Contexto individual: {individual_context[-3:]}\n"
             f"Contexto global: {global_context[-3:]}\n"
@@ -108,7 +108,7 @@ class Agent:
         response = await self.model.generate(final_input)
 
         if len(response) < 50:
-            response = await self.model.generate(f"{final_input}\nPor favor, forneca mais detalhes.")
+            response = await self.model.generate(f"{final_input}\nPor favor, forneça mais detalhes.")
 
         if self.memory:
             self.memory.store_individual(self.name, f"Entrada: {input_text}\nResposta: {response}")
@@ -124,14 +124,14 @@ class Task:
     priority: int = 0
     dependencies: Optional[List["Task"]] = None
     result: Optional[str] = None
-    executed: bool = False  # Controle para evitar reexecucao
+    executed: bool = False  # Controle para evitar reexecução
 
     def get_dependencies_results(self) -> List[str]:
         if not self.dependencies:
             return []
         return [task.result for task in self.dependencies if task.result]
 
-# Crew (com controle de execucao)
+# Crew (com controle de execução)
 class Crew:
     def __init__(self, agents: List[Agent], tasks: List[Task]):
         self.agents = {agent.name: agent for agent in agents}

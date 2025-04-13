@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Exemplo basico de uso do pacote Mangaba.
+Exemplo básico de uso do pacote Mangaba.
 
 Este script demonstra como configurar e usar o Mangaba para criar
 uma equipe simples de agentes.
@@ -24,28 +24,28 @@ if not API_KEY:
 configure_api(API_KEY)
 
 async def simple_example():
-    """Exemplo simples de uso com um unico agente"""
-    # Criacao dos componentes basicos
+    """Exemplo simples de uso com um único agente"""
+    # Criação dos componentes básicos
     memory = mangaba.ContextualMemory()
     model = mangaba.GeminiModel()
     search_tool = mangaba.GoogleSearchTool()
     
-    # Criacao do agente
+    # Criação do agente
     pesquisador = mangaba.Agent(
         name="Pesquisador", 
-        role="Encontra informacoes", 
+        role="Encontra informações", 
         model=model, 
         tools=[search_tool], 
         memory=memory
     )
     
-    # Definicao da tarefa
+    # Definição da tarefa
     tarefa = mangaba.Task(
-        description="Quais sao as tendencias tecnologicas para 2025?", 
+        description="Quais são as tendências tecnológicas para 2025?", 
         agent=pesquisador
     )
     
-    # Execucao
+    # Execução
     equipe = mangaba.Crew(agents=[pesquisador], tasks=[tarefa])
     await equipe.run()
     

@@ -3,14 +3,14 @@ from setuptools import setup, find_packages
 import subprocess
 import sys
 
-# Garantir que as dependencias basicas de build estejam instaladas
+# Garantir que as dependências básicas de build estejam instaladas
 try:
     import pip
-    print("[-] pip esta instalado")
+    print("[-] pip está instalado")
 except ImportError:
-    print("[!] pip nao esta instalado corretamente")
+    print("[!] pip não está instalado corretamente")
 
-# Instalando dependencias antes da build
+# Instalando dependências antes da build
 DEPENDENCIES = [
     "google-generativeai>=0.8.3",
     "googlesearch-python>=1.2.1",
@@ -19,7 +19,7 @@ DEPENDENCIES = [
     "tenacity>=8.5.0",
 ]
 
-print("[+] Instalando dependencias necessarias para a build...")
+print("[+] Instalando dependências necessárias para a build...")
 for dep in DEPENDENCIES:
     try:
         subprocess.check_call(
@@ -31,14 +31,14 @@ for dep in DEPENDENCIES:
     except subprocess.CalledProcessError:
         print(f"  [!] Falha ao instalar {dep}")
 
-# Carrega o README para a descricao longa
+# Carrega o README para a descrição longa
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
     name="mangaba",
-    version="0.1.0",
-    description="Framework Python para criacao de equipes de agentes AI autonomos",
+    version="0.1.1",
+    description="Framework Python para criação de equipes de agentes AI autônomos",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Dheiver Santos",

@@ -1,81 +1,81 @@
 [![PyPI version](https://badge.fury.io/py/mangaba.svg)](https://badge.fury.io/py/mangaba)
 
-# Mangaba - Framework de Automacao com Agentes Inteligentes
+# Mangaba - Framework de Automação com Agentes Inteligentes
 
 <img src="https://github.com/dheiver2/mangaba_ai/blob/main/img.png" width="300">
 
-Framework Python para criacao de equipes de agentes AI autonomos que colaboram para resolver tarefas complexas.
+Framework Python para criação de equipes de agentes AI autônomos que colaboram para resolver tarefas complexas.
 
 ## ✨ Funcionalidades Principais
 
 - **Arquitetura Multi-Agente**: Crie equipes de agentes especializados
-- **Memoria Contextual**: Historico individual e compartilhado entre agentes
-- **Integracao Gemini**: Utilize os modelos mais avancados da Google
+- **Memória Contextual**: Histórico individual e compartilhado entre agentes
+- **Integração Gemini**: Utilize os modelos mais avançados da Google
 - **Ferramentas Externas**: Busca no Google e outras APIs
-- **Gerenciamento de Tarefas**: Dependencias e priorizacao automatica
-- **Processamento Assincrono**: Execucao paralela para maior eficiencia
+- **Gerenciamento de Tarefas**: Dependências e priorização automática
+- **Processamento Assíncrono**: Execução paralela para maior eficiência
 
-## 🚀 Comecando
+## 🚀 Começando
 
-### Pre-requisitos
+### Pré-requisitos
 - Python 3.9+
 - Conta no Google AI Studio (para API key do Gemini)
 
-### Instalacao
+### Instalação
 
-**Metodo 1: Instalacao via pip (mais simples)**
+**Método 1: Instalação via pip (mais simples)**
 ```bash
 pip install mangaba
 ```
 
-**Metodo 2: Instalacao direta do repositorio com pre-instalacao**
+**Método 2: Instalação direta do repositório com pré-instalação**
 ```bash
 git clone https://github.com/dheiver2/mangaba_ai.git
 cd mangaba_ai
-# Execute o script de pre-instalacao das dependencias (recomendado)
+# Execute o script de pré-instalação das dependências (recomendado)
 python setup.py.pre
 # Depois instale o pacote
 pip install .
 ```
 
-**Metodo 3: Instalacao com requisitos em lote**
+**Método 3: Instalação com requisitos em lote**
 ```bash
 git clone https://github.com/dheiver2/mangaba_ai.git
 cd mangaba_ai
-# Primeiro instale as dependencias
+# Primeiro instale as dependências
 pip install -r requirements.txt
 # Depois instale o pacote
 pip install .
 ```
 
-### Verificacao da Instalacao
+### Verificação da Instalação
 Para verificar se o Mangaba foi instalado corretamente, execute:
 ```python
 import mangaba
-print(mangaba.__version__)  # Deve exibir a versao atual
+print(mangaba.__version__)  # Deve exibir a versão atual
 ```
 
-### Solucao de problemas
+### Solução de problemas
 
-1. Se encontrar erros sobre dependencias, instale-as manualmente:
+1. Se encontrar erros sobre dependências, instale-as manualmente:
 ```bash
 pip install google-generativeai googlesearch-python requests aiohttp tenacity
 ```
 
-2. Para ambiente Windows com problemas de codificacao:
+2. Para ambiente Windows com problemas de codificação:
 ```bash
 set PYTHONIOENCODING=utf-8
 pip install mangaba
 ```
 
-3. Em caso de falha na instalacao em modo editavel:
+3. Em caso de falha na instalação em modo editável:
 ```bash
 python setup.py develop
 ```
 
-### Configuracao
+### Configuração
 1. Obtenha sua API key do Gemini em https://ai.google.dev/
-2. Configure a API em seu codigo:
+2. Configure a API em seu código:
 
 ```python
 import mangaba
@@ -91,10 +91,10 @@ configure_api("sua_chave_aqui")
 import asyncio
 import mangaba
 
-# Configure a API (veja secao de configuracao)
+# Configure a API (veja seção de configuração)
 
 async def exemplo():
-    # Criacao dos agentes
+    # Criação dos agentes
     memory = mangaba.ContextualMemory()
     model = mangaba.GeminiModel()
     search_tool = mangaba.GoogleSearchTool()
@@ -107,13 +107,13 @@ async def exemplo():
         memory=memory
     )
 
-    # Definicao de tarefas
+    # Definição de tarefas
     tarefa = mangaba.Task(
-        description="Buscar inovacoes em IA", 
+        description="Buscar inovações em IA", 
         agent=pesquisador
     )
 
-    # Execucao
+    # Execução
     equipe = mangaba.Crew(agents=[pesquisador], tasks=[tarefa])
     await equipe.run()
     
@@ -129,12 +129,12 @@ if __name__ == "__main__":
 ```
 mangaba/
 ├── __init__.py        # Exporta as classes principais
-├── config/            # Modulo de configuracao
+├── config/            # Módulo de configuração
 │   ├── __init__.py
-│   └── api.py         # Funcoes para configuracao da API
-├── core/              # Modulo principal
+│   └── api.py         # Funções para configuração da API
+├── core/              # Módulo principal
 │   ├── __init__.py
-│   └── models.py      # Definicoes das classes principais
+│   └── models.py      # Definições das classes principais
 └── cases/             # Casos de uso
     ├── __init__.py
     └── cases.py       # Exemplos prontos
@@ -142,15 +142,15 @@ mangaba/
 
 ## 🤝 Como Contribuir
 
-1. Faca um fork do projeto
+1. Faça um fork do projeto
 2. Crie sua branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudancas (`git commit -m 'Adiciona nova funcionalidade'`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
 
-## 📄 Licenca
+## 📄 Licença
 
-Distribuido sob licenca MIT. Veja `LICENSE` para mais informacoes.
+Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 
 ## ✉️ Contato
 

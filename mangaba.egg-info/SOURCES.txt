@@ -4,6 +4,7 @@ pyproject.toml
 requirements.txt
 setup.py
 examples/basic_usage.py
+examples/verify_version.py
 mangaba/__init__.py
 mangaba.egg-info/PKG-INFO
 mangaba.egg-info/SOURCES.txt

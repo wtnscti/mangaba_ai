@@ -2,19 +2,19 @@
 # -*- coding: utf-8 -*-
 
 """
-Script de pre-instalacao para o pacote Mangaba.
-Garante que todas as dependencias necessarias sejam instaladas.
+Script de pré-instalação para o pacote Mangaba.
+Garante que todas as dependências necessárias sejam instaladas.
 """
 
 import subprocess
 import sys
 
 def pre_install():
-    """Instala as dependencias necessarias antes da instalacao principal."""
-    print("[*] Preparando o ambiente para instalacao do Mangaba...")
+    """Instala as dependências necessárias antes da instalação principal."""
+    print("[*] Preparando o ambiente para instalação do Mangaba...")
     
-    # Dependencias basicas de build
-    print("[+] Instalando dependencias basicas de build...")
+    # Dependências básicas de build
+    print("[+] Instalando dependências básicas de build...")
     build_deps = ["wheel", "setuptools>=61.0.0", "pip>=21.0.0"]
     for dep in build_deps:
         try:
@@ -27,8 +27,8 @@ def pre_install():
         except subprocess.CalledProcessError:
             print(f"  [!] Falha ao instalar {dep}")
     
-    # Dependencias principais
-    print("[+] Instalando dependencias principais...")
+    # Dependências principais
+    print("[+] Instalando dependências principais...")
     deps = [
         "google-generativeai>=0.8.3",
         "googlesearch-python>=1.2.1",
@@ -48,8 +48,8 @@ def pre_install():
         except subprocess.CalledProcessError:
             print(f"  [!] Falha ao instalar {dep}")
     
-    print("[+] Preparacao concluida!")
-    print("[*] Agora voce pode instalar o Mangaba com 'pip install .'")
+    print("[+] Preparação concluída!")
+    print("[*] Agora você pode instalar o Mangaba com 'pip install .'")
 
 if __name__ == "__main__":
     pre_install() 
