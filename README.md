@@ -154,6 +154,7 @@ Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 
 ## ✉️ Contato
 
-Dheiver Santos - [@dheiver](https://github.com/dheiver2) - dheiver.santos@gmail.com
+1. Dheiver  - [@dheiver](https://github.com/dheiver2) - dheiver.santos@gmail.com
+2. Gabriel  - [@Gabriel](https://github.com/Dargouls) - gabriel.azevedo_dev@hotmail.com 
 
 Project Link: [https://github.com/dheiver2/mangaba_ai](https://github.com/dheiver2/mangaba_ai)
