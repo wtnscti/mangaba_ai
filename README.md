@@ -157,4 +157,3 @@ Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
 1. Dheiver  - [@dheiver](https://github.com/dheiver2) - dheiver.santos@gmail.com
 2. Gabriel  - [@Gabriel](https://github.com/Dargouls) - gabriel.azevedo_dev@hotmail.com 
 3. Luiz  - [@Luiz](https://github.com/luizfilipelgs) - luizfilipelgs@gmail.com
-Project Link: [https://github.com/dheiver2/mangaba_ai](https://github.com/dheiver2/mangaba_ai)
