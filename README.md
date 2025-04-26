@@ -1,6 +1,4 @@
-# 🍈 Mangaba.AI
 <img src="https://github.com/dheiver2/mangaba_ai/blob/main/img2.png" width="400" alt="Mangaba.AI logo">
-
 **Mangaba.AI** é um framework avançado em Python para orquestrar equipes de agentes de IA autônomos que colaboram para resolver tarefas complexas de forma eficiente.
 
 ---
