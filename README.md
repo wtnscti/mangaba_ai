@@ -1,89 +1,90 @@
+# 🍈 Mangaba.AI
 [![PyPI version](https://badge.fury.io/py/mangaba.svg)](https://badge.fury.io/py/mangaba)
 
-# Mangaba - Framework de Automação com Agentes Inteligentes
+<img src="https://github.com/dheiver2/mangaba_ai/blob/main/img2.png" width="400" alt="Mangaba.AI logo">
 
-<img src="https://github.com/dheiver2/mangaba_ai/blob/main/img2.png" width="300">
+**Mangaba.AI** é um framework avançado em Python para orquestrar equipes de agentes de IA autônomos que colaboram para resolver tarefas complexas de forma eficiente.
 
-Framework Python para criação de equipes de agentes AI autônomos que colaboram para resolver tarefas complexas.
+---
 
-## ✨ Funcionalidades Principais
+## ✨ Recursos Principais
+- 🔹 **Arquitetura Multi-Agente** — Especialização e colaboração entre agentes
+- 🧠 **Memória Contextual** — Histórico individual e compartilhado
+- 🧬 **Integração Gemini** — Modelos de ponta da Google
+- 🔍 **Ferramentas Externas** — Busca no Google e mais
+- ✅ **Gerenciamento de Tarefas** — Com dependências e priorização
+- ⚡ **Execução Assíncrona** — Processamento paralelo para alta performance
 
-- **Arquitetura Multi-Agente**: Crie equipes de agentes especializados
-- **Memória Contextual**: Histórico individual e compartilhado entre agentes
-- **Integração Gemini**: Utilize os modelos mais avançados da Google
-- **Ferramentas Externas**: Busca no Google e outras APIs
-- **Gerenciamento de Tarefas**: Dependências e priorização automática
-- **Processamento Assíncrono**: Execução paralela para maior eficiência
+---
 
-## 🚀 Começando
+## 🚀 Como Começar
 
-### Pré-requisitos
+### 🛠 Pré-requisitos
 - Python 3.9+
-- Conta no Google AI Studio (para API key do Gemini)
+- Conta no [Google AI Studio](https://ai.google.dev/) (para API Key do Gemini)
 
-### Instalação
+### 📦 Instalação
 
-**Método 1: Instalação via pip (mais simples)**
+**Via pip (mais simples):**
 ```bash
 pip install mangaba
 ```
 
-**Método 2: Instalação direta do repositório com pré-instalação**
+**Ou clonando o repositório:**
 ```bash
 git clone https://github.com/dheiver2/mangaba_ai.git
 cd mangaba_ai
-# Execute o script de pré-instalação das dependências (recomendado)
-python setup.py.pre
-# Depois instale o pacote
+python setup.py.pre   # Instala dependências
 pip install .
 ```
 
-**Método 3: Instalação com requisitos em lote**
+**Ou utilizando o requirements.txt:**
 ```bash
 git clone https://github.com/dheiver2/mangaba_ai.git
 cd mangaba_ai
-# Primeiro instale as dependências
 pip install -r requirements.txt
-# Depois instale o pacote
 pip install .
 ```
 
-### Verificação da Instalação
-Para verificar se o Mangaba foi instalado corretamente, execute:
+---
+
+## 🧪 Verificação da Instalação
 ```python
 import mangaba
-print(mangaba.__version__)  # Deve exibir a versão atual
+print(mangaba.__version__)
 ```
 
-### Solução de problemas
+---
 
-1. Se encontrar erros sobre dependências, instale-as manualmente:
+## 🛠 Solução de Problemas
+- **Dependências faltando:**  
 ```bash
 pip install google-generativeai googlesearch-python requests aiohttp tenacity
 ```
 
-2. Para ambiente Windows com problemas de codificação:
+- **Windows (problema de codificação):**  
 ```bash
 set PYTHONIOENCODING=utf-8
 pip install mangaba
 ```
 
-3. Em caso de falha na instalação em modo editável:
+- **Erro na instalação em modo editável:**  
 ```bash
 python setup.py develop
 ```
 
-### Configuração
-1. Obtenha sua API key do Gemini em https://ai.google.dev/
-2. Configure a API em seu código:
+---
+
+## ⚙️ Configuração Inicial
+1. Obtenha sua API Key no [Google AI Studio](https://ai.google.dev/).
+2. Configure em seu projeto:
 
 ```python
-import mangaba
 from mangaba.config import configure_api
-
-# Configure a API com sua chave
-configure_api("sua_chave_aqui")
+configure_api("sua_api_key_aqui")
 ```
+
+---
 
 ## 📚 Exemplo de Uso
 
@@ -91,10 +92,7 @@ configure_api("sua_chave_aqui")
 import asyncio
 import mangaba
 
-# Configure a API (veja seção de configuração)
-
 async def exemplo():
-    # Criação dos agentes
     memory = mangaba.ContextualMemory()
     model = mangaba.GeminiModel()
     search_tool = mangaba.GoogleSearchTool()
@@ -107,53 +105,54 @@ async def exemplo():
         memory=memory
     )
 
-    # Definição de tarefas
     tarefa = mangaba.Task(
         description="Buscar inovações em IA", 
         agent=pesquisador
     )
 
-    # Execução
     equipe = mangaba.Crew(agents=[pesquisador], tasks=[tarefa])
     await equipe.run()
     
-    # Resultado
     print(tarefa.result)
 
 if __name__ == "__main__":
     asyncio.run(exemplo())
 ```
 
-## 🏗 Estrutura do Projeto
+---
 
+## 🏗 Estrutura do Projeto
 ```
 mangaba/
-├── __init__.py        # Exporta as classes principais
-├── config/            # Módulo de configuração
+├── __init__.py
+├── config/
 │   ├── __init__.py
-│   └── api.py         # Funções para configuração da API
-├── core/              # Módulo principal
+│   └── api.py
+├── core/
 │   ├── __init__.py
-│   └── models.py      # Definições das classes principais
-└── cases/             # Casos de uso
+│   └── models.py
+└── cases/
     ├── __init__.py
-    └── cases.py       # Exemplos prontos
+    └── cases.py
 ```
 
-## 🤝 Como Contribuir
+---
 
-1. Faça um fork do projeto
-2. Crie sua branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um Pull Request
+## 🤝 Como Contribuir
+1. Faça um fork 🍴
+2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
+3. Commit suas mudanças (`git commit -m 'feat: adiciona nova funcionalidade'`)
+4. Push para sua branch (`git push origin feature/nova-funcionalidade`)
+5. Abra um Pull Request 🚀
+
+---
 
 ## 📄 Licença
+Distribuído sob licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
 
-Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
+---
 
 ## ✉️ Contato
-
-1. Dheiver  - [@dheiver](https://github.com/dheiver2) - dheiver.santos@gmail.com
-2. Gabriel  - [@Gabriel](https://github.com/Dargouls) - gabriel.azevedo_dev@hotmail.com 
-3. Luiz  - [@Luiz](https://github.com/luizfilipelgs) - luizfilipelgs@gmail.com
+- Dheiver — [@dheiver2](https://github.com/dheiver2) — dheiver.santos@gmail.com
+- Gabriel — [@Dargouls](https://github.com/Dargouls) — gabriel.azevedo_dev@hotmail.com
+- Luiz — [@luizfilipelgs](https://github.com/luizfilipelgs) — luizfilipelgs@gmail.com
