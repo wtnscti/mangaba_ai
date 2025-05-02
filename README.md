@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/dheiver2/mangaba_ai/blob/main/img2.png" width="400" alt="Mangaba.AI logo">
+  <img src="assets/img2.png" width="400" alt="Mangaba.AI logo">
 </p>
 
 <h1 align="center">Mangaba.AI</h1>
@@ -29,18 +29,10 @@
 
 **Instalação via pip:**
 ```bash
-pip install mangaba
+pip install mangaba-ai
 ```
 
 **Clonando o repositório:**
-```bash
-git clone https://github.com/dheiver2/mangaba_ai.git
-cd mangaba_ai
-python setup.py.pre   # Instala dependências
-pip install .
-```
-
-**Usando `requirements.txt`:**
 ```bash
 git clone https://github.com/dheiver2/mangaba_ai.git
 cd mangaba_ai
@@ -53,8 +45,8 @@ pip install .
 ## ✅ Verificando a Instalação
 
 ```python
-import mangaba
-print(mangaba.__version__)  # Exibe a versão instalada
+import mangaba_ai
+print(mangaba_ai.__version__)  # Exibe a versão instalada
 ```
 
 ---
@@ -63,18 +55,13 @@ print(mangaba.__version__)  # Exibe a versão instalada
 
 - **Dependências faltando:**  
 ```bash
-pip install google-generativeai googlesearch-python requests aiohttp tenacity
+pip install -r requirements.txt
 ```
 
 - **Problemas de codificação no Windows:**  
 ```bash
 set PYTHONIOENCODING=utf-8
-pip install mangaba
-```
-
-- **Erro ao instalar no modo editável:**  
-```bash
-python setup.py develop
+pip install mangaba-ai
 ```
 
 ---
@@ -85,7 +72,7 @@ python setup.py develop
 2. Configure no seu projeto:
 
 ```python
-from mangaba.config import configure_api
+from mangaba_ai.config import configure_api
 configure_api("sua_api_key_aqui")
 ```
 
@@ -95,14 +82,16 @@ configure_api("sua_api_key_aqui")
 
 ```python
 import asyncio
-import mangaba
+import mangaba_ai
 
 async def exemplo():
-    memory = mangaba.ContextualMemory()
-    model = mangaba.GeminiModel()
-    search_tool = mangaba.GoogleSearchTool()
+    # Inicializa os componentes
+    memory = mangaba_ai.ContextualMemory()
+    model = mangaba_ai.GeminiModel()
+    search_tool = mangaba_ai.GoogleSearchTool()
 
-    pesquisador = mangaba.Agent(
+    # Cria um agente
+    pesquisador = mangaba_ai.Agent(
         name="Pesquisador",
         role="Busca dados",
         model=model,
@@ -110,14 +99,17 @@ async def exemplo():
         memory=memory
     )
 
-    tarefa = mangaba.Task(
+    # Cria uma tarefa
+    tarefa = mangaba_ai.Task(
         description="Buscar inovações em IA",
         agent=pesquisador
     )
 
-    equipe = mangaba.Crew(agents=[pesquisador], tasks=[tarefa])
+    # Cria uma equipe e executa
+    equipe = mangaba_ai.Crew(agents=[pesquisador], tasks=[tarefa])
     await equipe.run()
 
+    # Exibe o resultado
     print(tarefa.result)
 
 if __name__ == "__main__":
@@ -129,17 +121,46 @@ if __name__ == "__main__":
 ## 🏗 Estrutura do Projeto
 
 ```
-mangaba/
-├── __init__.py         # Inicializador do pacote
-├── config/             # Configurações e API keys
-│   ├── __init__.py
-│   └── api.py
-├── core/               # Componentes centrais (Agentes, Tarefas, Equipes)
-│   ├── __init__.py
-│   └── models.py
-└── cases/              # Casos de uso prontos
-    ├── __init__.py
-    └── cases.py
+mangaba_ai/
+├── assets/             # Recursos estáticos (imagens, etc.)
+├── docs/              # Documentação detalhada
+├── examples/          # Exemplos e notebooks
+├── mangaba_ai/        # Código fonte principal
+│   ├── __init__.py    # Inicializador do pacote
+│   ├── logging_config.py
+│   ├── config/        # Configurações
+│   ├── core/          # Componentes centrais
+│   └── cases/         # Casos de uso
+└── tests/             # Testes automatizados
+```
+
+---
+
+## 🧪 Testes
+
+O projeto inclui testes automatizados para garantir a qualidade do código:
+
+```bash
+# Instalar dependências de teste
+pip install -r requirements.txt
+
+# Executar todos os testes
+pytest
+
+# Executar testes com cobertura
+pytest --cov=mangaba_ai
+```
+
+---
+
+## 📚 Documentação
+
+A documentação detalhada está disponível em `docs/`:
+
+```bash
+# Gerar documentação
+cd docs
+make html
 ```
 
 ---

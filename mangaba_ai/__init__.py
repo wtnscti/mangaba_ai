@@ -1,19 +1,17 @@
-# -*- coding: utf-8 -*-
 """
-Mangaba - Framework de Automação com Agentes Inteligentes
+Mangaba.AI - Framework de Automação com Agentes Inteligentes
 
 Um framework Python para criação de equipes de agentes AI autônomos 
 que colaboram para resolver tarefas complexas.
 """
 
-__version__ = "0.1.1"
+__version__ = "0.1.0"
 
 # Verificação e instalação automática de dependências
 import importlib.util
 import subprocess
 import sys
 import warnings
-
 
 def _check_and_install_dependency(package_name, pip_name=None):
     """Verifica se um pacote está instalado e o instala se necessário."""
@@ -38,7 +36,6 @@ def _check_and_install_dependency(package_name, pip_name=None):
                 f"Por favor, instale manualmente com 'pip install {pip_name}'"
             )
 
-
 # Verificação de dependências principais
 _check_and_install_dependency("google", "google-generativeai>=0.8.3")
 _check_and_install_dependency("googlesearch", "googlesearch-python>=1.2.1")
@@ -47,7 +44,7 @@ _check_and_install_dependency("aiohttp", "aiohttp>=3.10.5")
 _check_and_install_dependency("tenacity", "tenacity>=8.5.0")
 
 # Importa as classes principais para facilitar o acesso direto
-from mangaba.core.models import (
+from mangaba_ai.core.models import (
     ContextualMemory,
     GeminiModel,
     GoogleSearchTool,

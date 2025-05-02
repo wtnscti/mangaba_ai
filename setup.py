@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+"""
+Setup configuration for Mangaba.AI
+"""
 from setuptools import setup, find_packages
 import subprocess
 import sys
@@ -35,28 +37,37 @@ for dep in DEPENDENCIES:
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+with open("requirements.txt", "r", encoding="utf-8") as f:
+    requirements = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+
 setup(
-    name="mangaba",
-    version="0.1.1",
-    description="Framework Python para criação de equipes de agentes AI autônomos",
+    name="mangaba-ai",
+    version="0.1.0",
+    description="Framework avançado para orquestração de equipes de agentes de IA autônomos",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="Dheiver Santos",
+    author="Dheiver Santos, Gabriel Azevedo, Luiz Filho",
     author_email="dheiver.santos@gmail.com",
     url="https://github.com/dheiver2/mangaba_ai",
-    packages=find_packages(),
-    install_requires=DEPENDENCIES,
-    setup_requires=["wheel"],
+    packages=find_packages(include=["mangaba_ai", "mangaba_ai.*"]),
+    install_requires=requirements,
+    python_requires=">=3.9",
     classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Development Status :: 3 - Alpha",
-        "Intended Audience :: Developers",
-        "Topic :: Software Development :: Libraries :: Python Modules",
+        "Programming Language :: Python :: 3.11",
     ],
-    python_requires=">=3.9",
-    keywords="ai, agents, llm, gemini, autonomous",
+    entry_points={
+        "console_scripts": [
+            "mangaba=mangaba_ai.cli:main",
+        ],
+    },
+    include_package_data=True,
+    package_data={
+        "mangaba_ai": ["config/*.json", "config/*.yaml"],
+    },
 ) 
