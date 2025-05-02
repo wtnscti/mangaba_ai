@@ -7,193 +7,110 @@
 
 ---
 
-## ✨ Recursos Principais
+## Características
 
-- 🔹 **Arquitetura Multi-Agente** — Especialização e colaboração entre agentes
-- 🧠 **Memória Contextual** — Histórico individual e compartilhado
-- 🧬 **Integração com Gemini** — Modelos de ponta da Google
-- 🔍 **Ferramentas Externas** — Busca no Google e APIs adicionais
-- ✅ **Gerenciamento de Tarefas** — Dependências e priorização automática
-- ⚡ **Execução Assíncrona** — Processamento paralelo para alta performance
+- Suporte a múltiplos modelos de IA (Gemini, OpenAI, Anthropic)
+- Sistema de agentes autônomos
+- Protocolos de comunicação A2A e MCP
+- Sistema de memória contextual
+- Integrações com plataformas externas (Slack, GitHub, Jira, Discord)
+- Configuração flexível
+- Interface interativa
+- Documentação completa
 
----
+## Instalação
 
-## 🚀 Como Começar
-
-### 🛠 Pré-requisitos
-
-- Python **3.9+**
-- Conta no [Google AI Studio](https://ai.google.dev/) (para obter sua API Key)
-
-### 📦 Instalação
-
-**Instalação via pip:**
+1. Clone o repositório:
 ```bash
-pip install mangaba-ai
-```
-
-**Clonando o repositório:**
-```bash
-git clone https://github.com/dheiver2/mangaba_ai.git
+git clone https://github.com/seu-usuario/mangaba_ai.git
 cd mangaba_ai
-pip install -r requirements.txt
-pip install .
 ```
 
----
-
-## ✅ Verificando a Instalação
-
-```python
-import mangaba_ai
-print(mangaba_ai.__version__)  # Exibe a versão instalada
-```
-
----
-
-## 🛠 Solução de Problemas
-
-- **Dependências faltando:**  
+2. Instale as dependências:
 ```bash
 pip install -r requirements.txt
 ```
 
-- **Problemas de codificação no Windows:**  
+3. Execute o assistente de configuração:
 ```bash
-set PYTHONIOENCODING=utf-8
-pip install mangaba-ai
+python setup.py
 ```
 
----
+O assistente irá guiá-lo através de:
+- Configuração de APIs (Gemini, OpenAI, Anthropic)
+  - Guia passo a passo para obter chaves de API
+  - Links diretos para páginas de configuração
+  - Validação de chaves
+- Configuração de Modelos
+  - Configurações padrão otimizadas
+  - Opção para configuração personalizada
+  - Ajustes de parâmetros
+- Configuração de Integrações
+  - Slack, GitHub, Jira, Discord
+  - Guias específicos para cada plataforma
+  - Validação de configurações
 
-## ⚙️ Configuração Inicial
+## Uso
 
-1. Obtenha sua API Key no [Google AI Studio](https://ai.google.dev/).
-2. Configure no seu projeto:
+### Interface Interativa
+
+Para iniciar a interface interativa:
+```bash
+python -m mangaba_ai
+```
+
+A interface oferece:
+- Criação de agentes
+- Listagem de agentes existentes
+- Execução de tarefas
+- Configuração de integrações
+
+### Uso Programático
 
 ```python
-from mangaba_ai.config import configure_api
-configure_api("sua_api_key_aqui")
+from mangaba_ai import MangabaAI
+
+# Inicialize o sistema
+mangaba = MangabaAI()
+
+# Crie um agente
+agente = mangaba.criar_agente(
+    nome="pesquisador",
+    papel="Pesquisador de informações",
+    objetivo="Encontrar e analisar informações relevantes"
+)
+
+# Execute uma tarefa
+resultado = await agente.executar_tarefa(
+    "Pesquisar sobre inteligência artificial"
+)
+
+print(resultado)
 ```
 
----
+## Documentação
 
-## 📚 Exemplo de Uso
+A documentação completa está disponível em `docs/`:
 
-```python
-import asyncio
-import mangaba_ai
+- [Agentes](docs/agents.md)
+- [Tarefas](docs/tasks.md)
+- [Comunicação](docs/communication.md)
+- [Memória](docs/memory.md)
+- [Modelos](docs/models.md)
+- [Fluxo de Trabalho](docs/workflow.md)
+- [Configuração](docs/configuration.md)
 
-async def exemplo():
-    # Inicializa os componentes
-    memory = mangaba_ai.ContextualMemory()
-    model = mangaba_ai.GeminiModel()
-    search_tool = mangaba_ai.GoogleSearchTool()
+## Exemplos
 
-    # Cria um agente
-    pesquisador = mangaba_ai.Agent(
-        name="Pesquisador",
-        role="Busca dados",
-        model=model,
-        tools=[search_tool],
-        memory=memory
-    )
+Exemplos de uso estão disponíveis em `examples/`:
 
-    # Cria uma tarefa
-    tarefa = mangaba_ai.Task(
-        description="Buscar inovações em IA",
-        agent=pesquisador
-    )
+- [Sistema Completo](examples/full_system_example.py)
+- [Integrações](examples/platform_integrations/)
 
-    # Cria uma equipe e executa
-    equipe = mangaba_ai.Crew(agents=[pesquisador], tasks=[tarefa])
-    await equipe.run()
+## Contribuição
 
-    # Exibe o resultado
-    print(tarefa.result)
+Contribuições são bem-vindas! Por favor, leia as diretrizes de contribuição em `CONTRIBUTING.md`.
 
-if __name__ == "__main__":
-    asyncio.run(exemplo())
-```
+## Licença
 
----
-
-## 🏗 Estrutura do Projeto
-
-```
-mangaba_ai/
-├── assets/             # Recursos estáticos (imagens, etc.)
-├── docs/              # Documentação detalhada
-├── examples/          # Exemplos e notebooks
-├── mangaba_ai/        # Código fonte principal
-│   ├── __init__.py    # Inicializador do pacote
-│   ├── logging_config.py
-│   ├── config/        # Configurações
-│   ├── core/          # Componentes centrais
-│   └── cases/         # Casos de uso
-└── tests/             # Testes automatizados
-```
-
----
-
-## 🧪 Testes
-
-O projeto inclui testes automatizados para garantir a qualidade do código:
-
-```bash
-# Instalar dependências de teste
-pip install -r requirements.txt
-
-# Executar todos os testes
-pytest
-
-# Executar testes com cobertura
-pytest --cov=mangaba_ai
-```
-
----
-
-## 📚 Documentação
-
-A documentação detalhada está disponível em `docs/`:
-
-```bash
-# Gerar documentação
-cd docs
-make html
-```
-
----
-
-## 🤝 Como Contribuir
-
-1. Faça um **fork** 🍴
-2. Crie uma **branch**:  
-```bash
-git checkout -b feature/sua-nova-funcionalidade
-```
-3. **Commit** suas mudanças:  
-```bash
-git commit -m 'feat: adiciona nova funcionalidade'
-```
-4. **Push** para sua branch:  
-```bash
-git push origin feature/sua-nova-funcionalidade
-```
-5. Abra um **Pull Request** 🚀
-
----
-
-## 📄 Licença
-
-Distribuído sob a licença **MIT**. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
-
----
-
-## ✉️ Contato
-
-| Nome | GitHub | E-mail |
-|:---|:---|:---|
-| Dheiver | [@dheiver2](https://github.com/dheiver2) | dheiver.santos@gmail.com |
-| Gabriel | [@Dargouls](https://github.com/Dargouls) | gabriel.azevedo_dev@hotmail.com |
-| Luiz | [@luizfilipelgs](https://github.com/luizfilipelgs) | luizfilipelgs@gmail.com |
+Este projeto está licenciado sob a licença MIT - veja o arquivo `LICENSE` para detalhes.

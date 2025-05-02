@@ -4,6 +4,11 @@ Setup configuration for Mangaba.AI
 from setuptools import setup, find_packages
 import subprocess
 import sys
+import os
+import json
+import shutil
+from pathlib import Path
+from mangaba_ai.config.assistant import run_config_assistant
 
 # Garantir que as dependências básicas de build estejam instaladas
 try:
@@ -39,6 +44,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 with open("requirements.txt", "r", encoding="utf-8") as f:
     requirements = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+
+if __name__ == "__main__":
+    # Executa o assistente de configuração
+    run_config_assistant()
 
 setup(
     name="mangaba-ai",

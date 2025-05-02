@@ -2,56 +2,55 @@
 # -*- coding: utf-8 -*-
 
 """
-Exemplo básico de uso do pacote Mangaba.
-
-Este script demonstra como configurar e usar o Mangaba para criar
-uma equipe simples de agentes.
+Exemplo básico de uso do Mangaba.AI
 """
-
 import asyncio
 import os
+from dotenv import load_dotenv
+from mangaba_ai.main import MangabaAI
 
-# Importando o pacote principal
-import mangaba
-from mangaba.config import configure_api
+# Carrega as variáveis de ambiente
+load_dotenv()
 
-# Definir sua chave API do Gemini (obtenha em https://ai.google.dev/)
-API_KEY = os.environ.get("GEMINI_API_KEY", "")
-if not API_KEY:
-    API_KEY = input("Digite sua chave de API do Gemini: ")
-
-# Configurar a API
-configure_api(API_KEY)
-
-async def simple_example():
-    """Exemplo simples de uso com um único agente"""
-    # Criação dos componentes básicos
-    memory = mangaba.ContextualMemory()
-    model = mangaba.GeminiModel()
-    search_tool = mangaba.GoogleSearchTool()
-    
-    # Criação do agente
-    pesquisador = mangaba.Agent(
-        name="Pesquisador", 
-        role="Encontra informações", 
-        model=model, 
-        tools=[search_tool], 
-        memory=memory
-    )
-    
-    # Definição da tarefa
-    tarefa = mangaba.Task(
-        description="Quais são as tendências tecnológicas para 2025?", 
-        agent=pesquisador
-    )
-    
-    # Execução
-    equipe = mangaba.Crew(agents=[pesquisador], tasks=[tarefa])
-    await equipe.run()
-    
-    # Resultado
-    print("\nResultado final:")
-    print(tarefa.result)
+async def main():
+    """Função principal do exemplo."""
+    try:
+        # Verifica se as chaves de API estão configuradas
+        if not os.getenv("GEMINI_API_KEY"):
+            raise ValueError("GEMINI_API_KEY não configurada no arquivo .env")
+        
+        # Inicializa o Mangaba.AI
+        mangaba = MangabaAI()
+        
+        # Define as tarefas a serem executadas
+        tasks = [
+            {
+                "type": "researcher",
+                "description": "Pesquisar sobre os últimos avanços em IA generativa"
+            },
+            {
+                "type": "analyzer",
+                "description": "Analisar os impactos desses avanços na indústria"
+            },
+            {
+                "type": "writer",
+                "description": "Escrever um relatório sobre os resultados da análise"
+            }
+        ]
+        
+        # Executa as tarefas
+        print("Iniciando execução das tarefas...")
+        results = await mangaba.execute(tasks)
+        
+        # Exibe os resultados
+        print("\nResultados:")
+        for task, result in results.items():
+            print(f"\nTarefa: {task}")
+            print(f"Resultado: {result}")
+            
+    except Exception as e:
+        print(f"Erro durante a execução: {str(e)}")
+        raise
 
 if __name__ == "__main__":
-    asyncio.run(simple_example()) 
+    asyncio.run(main()) 

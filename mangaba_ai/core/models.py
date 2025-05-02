@@ -2,108 +2,184 @@
 # Definições das classes principais do Mangaba.AI
 
 import asyncio
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 from dataclasses import dataclass
 import google.generativeai as genai
 from googlesearch import search
+import aiohttp
+from tenacity import retry, stop_after_attempt, wait_exponential
+from .protocols import A2AProtocol, MCPProtocol
+from abc import ABC, abstractmethod
+from openai import AsyncOpenAI
+import anthropic
 
 # ContextualMemory (com memória global)
+@dataclass
 class ContextualMemory:
-    def __init__(self, max_context_size: int = 10):
-        self.individual_data: Dict[str, List[str]] = {}
-        self.global_data: List[str] = []
-        self.max_context_size = max_context_size
+    """Sistema de memória contextual para agentes."""
+    memory: Dict[str, Any] = None
 
-    def store_individual(self, agent_name: str, content: str):
-        agent_history = self.individual_data.setdefault(agent_name, [])
-        agent_history.append(content)
-        if len(agent_history) > self.max_context_size:
-            agent_history.pop(0)
+    def __post_init__(self):
+        self.memory = self.memory or {}
 
-    def store_global(self, content: str):
-        self.global_data.append(content)
-        if len(self.global_data) > self.max_context_size:
-            self.global_data.pop(0)
+    def add(self, key: str, value: Any) -> None:
+        """Adiciona um item à memória."""
+        self.memory[key] = value
 
-    def retrieve_individual(self, agent_name: str) -> List[str]:
-        return self.individual_data.get(agent_name, [])
+    def get(self, key: str) -> Any:
+        """Recupera um item da memória."""
+        return self.memory.get(key)
 
-    def retrieve_global(self) -> List[str]:
-        return self.global_data
+    def clear(self) -> None:
+        """Limpa a memória."""
+        self.memory.clear()
 
-# GeminiModel (com tratamento de erro)
-class GeminiModel:
-    def __init__(self, model_name: str = "gemini-1.5-flash", temperature: float = 0.7, top_k: int = 40):
-        self.model = genai.GenerativeModel(model_name)
-        self.temperature = temperature
-        self.top_k = top_k
+class AIModel(ABC):
+    """Interface base para modelos de IA."""
+    
+    @abstractmethod
+    async def generate(self, prompt: str, **kwargs) -> str:
+        """Gera texto com base no prompt."""
+        pass
 
-    async def generate(self, prompt: str) -> str:
-        try:
-            await asyncio.sleep(0.5)  # Simula latência
-            response = self.model.generate_content(
+class GeminiModel(AIModel):
+    """Implementação do modelo Gemini."""
+    
+    def __init__(self, api_key: str, **kwargs):
+        self.model = genai.GenerativeModel('gemini-pro')
+        genai.configure(api_key=api_key)
+        self.config = kwargs
+
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    async def generate(self, prompt: str, **kwargs) -> str:
+        response = await asyncio.to_thread(
+            self.model.generate_content,
                 prompt,
-                generation_config=genai.types.GenerationConfig(
-                    temperature=self.temperature,
-                    top_k=self.top_k
-                )
+            **{**self.config, **kwargs}
             )
             return response.text
-        except Exception as e:
-            return f"Erro na geração: {str(e)}"
+
+class OpenAIModel(AIModel):
+    """Implementação do modelo OpenAI."""
+    
+    def __init__(self, api_key: str, model_name: str = "gpt-4", **kwargs):
+        self.client = AsyncOpenAI(api_key=api_key)
+        self.model_name = model_name
+        self.config = kwargs
+
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    async def generate(self, prompt: str, **kwargs) -> str:
+        response = await self.client.chat.completions.create(
+            model=self.model_name,
+            messages=[{"role": "user", "content": prompt}],
+            **{**self.config, **kwargs}
+        )
+        return response.choices[0].message.content
+
+class AnthropicModel(AIModel):
+    """Implementação do modelo Claude."""
+    
+    def __init__(self, api_key: str, model_name: str = "claude-3-opus-20240229", **kwargs):
+        self.client = anthropic.AsyncAnthropic(api_key=api_key)
+        self.model_name = model_name
+        self.config = kwargs
+
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    async def generate(self, prompt: str, **kwargs) -> str:
+        response = await self.client.messages.create(
+            model=self.model_name,
+            max_tokens=1000,
+            messages=[{"role": "user", "content": prompt}],
+            **{**self.config, **kwargs}
+        )
+        return response.content[0].text
+
+class ModelFactory:
+    """Fábrica para criação de modelos de IA."""
+    
+    @staticmethod
+    def create_model(model_type: str, api_key: str, **kwargs) -> AIModel:
+        """Cria uma instância do modelo especificado."""
+        models = {
+            "gemini": GeminiModel,
+            "openai": OpenAIModel,
+            "anthropic": AnthropicModel
+        }
+        
+        if model_type not in models:
+            raise ValueError(f"Modelo {model_type} não suportado")
+        
+        return models[model_type](api_key, **kwargs)
 
 # GoogleSearchTool (busca real)
 class GoogleSearchTool:
-    async def run(self, query: str) -> str:
-        await asyncio.sleep(0.3)  # Simula latência de rede
-        try:
-            results = list(search(query, num_results=3))
-            return f"Resultados da busca: {', '.join(results)}"
-        except Exception as e:
-            return f"Erro na busca: {str(e)}"
+    """Ferramenta de busca no Google."""
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    async def search(self, query: str, num_results: int = 5) -> List[str]:
+        """Realiza uma busca no Google."""
+        results = await asyncio.to_thread(
+            search,
+            query,
+            num_results=num_results,
+            stop=num_results
+        )
+        return list(results)
 
 # Agent
 class Agent:
-    def __init__(self, name: str, role: str, model, tools: Optional[List] = None, memory=None):
+    """Agente autônomo para execução de tarefas."""
+    def __init__(
+        self,
+        name: str,
+        role: str,
+        model: GeminiModel,
+        secondary_model: Optional[SecondaryModel] = None,
+        tools: List[GoogleSearchTool] = None,
+        memory: ContextualMemory = None,
+        protocol: A2AProtocol = None
+    ):
         self.name = name
         self.role = role
         self.model = model
+        self.secondary_model = secondary_model
         self.tools = tools or []
-        self.memory = memory
+        self.memory = memory or ContextualMemory()
+        self.protocol = protocol or A2AProtocol()
+        
+        # Registra handlers de mensagens
+        self.protocol.register_handler(self.name, self.handle_message)
 
-    async def execute(self, input_text: str, dependencies: List[str] = None) -> str:
-        print(f"[{self.name}] Executando: {input_text}")
+    async def handle_message(self, message):
+        """Processa mensagens recebidas."""
+        # Implementa a lógica de processamento de mensagens
+        if "task" in message.content:
+            await self.execute(message.content["task"])
 
-        individual_context = self.memory.retrieve_individual(self.name) if self.memory else []
-        global_context = self.memory.retrieve_global() if self.memory else []
-        deps_text = f"Dependências: {dependencies}" if dependencies else ""
-        enriched_input = (
-            f"Contexto individual: {individual_context[-3:]}\n"
-            f"Contexto global: {global_context[-3:]}\n"
-            f"{deps_text}\nTarefa: {input_text}"
-        )
-
-        tool_outputs = []
+    async def execute(self, task: str) -> str:
+        """Executa uma tarefa."""
+        # Usa o modelo principal
+        response = await self.model.generate(task)
+        
+        # Se necessário, usa o modelo secundário
+        if self.secondary_model and "complex" in task.lower():
+            secondary_response = await self.secondary_model.generate(task)
+            response = f"{response}\n\nSecondary Analysis:\n{secondary_response}"
+        
+        # Usa as ferramentas se necessário
         for tool in self.tools:
-            tool_result = await tool.run(input_text)
-            tool_outputs.append(f"[{tool.__class__.__name__}] {tool_result}")
-
-        final_input = f"{enriched_input}\nResultados das ferramentas: {tool_outputs}" if tool_outputs else enriched_input
-
-        response = await self.model.generate(final_input)
-
-        if len(response) < 50:
-            response = await self.model.generate(f"{final_input}\nPor favor, forneça mais detalhes.")
-
-        if self.memory:
-            self.memory.store_individual(self.name, f"Entrada: {input_text}\nResposta: {response}")
-            self.memory.store_global(f"[{self.name}] {response}")
+            if "search" in task.lower():
+                results = await tool.search(task)
+                response += f"\n\nSearch Results:\n{results}"
+        
+        # Armazena o resultado na memória
+        self.memory.add("ultima_execucao", response)
 
         return response
 
 # Task
 @dataclass
 class Task:
+    """Representa uma tarefa a ser executada."""
     description: str
     agent: "Agent"
     priority: int = 0
@@ -116,25 +192,44 @@ class Task:
             return []
         return [task.result for task in self.dependencies if task.result]
 
+# SecondaryModel (modelo secundário)
+class SecondaryModel:
+    """Modelo secundário para tarefas específicas."""
+    def __init__(self, api_key: str):
+        self.model = genai.GenerativeModel('gemini-pro')
+        genai.configure(api_key=api_key)
+
+    @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=4, max=10))
+    async def generate(self, prompt: str) -> str:
+        """Gera texto com base no prompt."""
+        response = await asyncio.to_thread(
+            self.model.generate_content,
+            prompt
+        )
+        return response.text
+
 # Crew (com controle de execução)
 class Crew:
+    """Equipe de agentes trabalhando em conjunto."""
     def __init__(self, agents: List[Agent], tasks: List[Task]):
-        self.agents = {agent.name: agent for agent in agents}
-        self.tasks = sorted(tasks, key=lambda t: t.priority, reverse=True)
+        self.agents = agents
+        self.tasks = tasks
+        self.protocol = A2AProtocol()
 
-    async def run_task(self, task: Task):
-        if task.executed:  # Evita executar a mesma tarefa mais de uma vez
-            return
-
-        if task.dependencies:
-            await asyncio.gather(*(self.run_task(dep) for dep in task.dependencies if not dep.executed))
-
-        agent = self.agents[task.agent.name]
-        dependencies_results = task.get_dependencies_results()
-        result = await agent.execute(task.description, dependencies_results)
-        task.result = result
-        task.executed = True  # Marca como executada
-        print(f"[{agent.name}] Resultado: {result}")
-
-    async def run(self):
-        await asyncio.gather(*(self.run_task(task) for task in self.tasks))
+    async def run(self) -> Dict[str, Any]:
+        """Executa todas as tarefas da equipe."""
+        results = {}
+        
+        # Configura comunicação entre agentes
+        for agent in self.agents:
+            agent.protocol = self.protocol
+        
+        # Executa tarefas em paralelo
+        task_coroutines = [task.execute() for task in self.tasks]
+        await asyncio.gather(*task_coroutines)
+        
+        # Coleta resultados
+        for task in self.tasks:
+            results[task.description] = task.result
+        
+        return results
