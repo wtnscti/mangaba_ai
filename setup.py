@@ -8,7 +8,6 @@ import os
 import json
 import shutil
 from pathlib import Path
-from mangaba_ai.config.assistant import run_config_assistant
 
 # Garantir que as dependências básicas de build estejam instaladas
 try:
@@ -45,38 +44,25 @@ with open("README.md", "r", encoding="utf-8") as fh:
 with open("requirements.txt", "r", encoding="utf-8") as f:
     requirements = [line.strip() for line in f if line.strip() and not line.startswith("#")]
 
-if __name__ == "__main__":
-    # Executa o assistente de configuração
-    run_config_assistant()
-
 setup(
     name="mangaba-ai",
     version="0.1.0",
-    description="Framework avançado para orquestração de equipes de agentes de IA autônomos",
+    author="Mangaba.AI Team",
+    author_email="contact@mangaba.ai",
+    description="Framework para desenvolvimento de agentes autônomos",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    author="Dheiver Santos, Gabriel Azevedo, Luiz Filho",
-    author_email="dheiver.santos@gmail.com",
-    url="https://github.com/dheiver2/mangaba_ai",
-    packages=find_packages(include=["mangaba_ai", "mangaba_ai.*"]),
-    install_requires=requirements,
-    python_requires=">=3.9",
+    url="https://github.com/mangaba-ai/mangaba-ai",
+    packages=find_packages(),
     classifiers=[
-        "Development Status :: 3 - Alpha",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
     ],
-    entry_points={
-        "console_scripts": [
-            "mangaba=mangaba_ai.cli:main",
-        ],
-    },
-    include_package_data=True,
-    package_data={
-        "mangaba_ai": ["config/*.json", "config/*.yaml"],
-    },
+    python_requires=">=3.8",
+    install_requires=[
+        "google-generativeai>=0.8.3",
+        "python-dotenv>=1.0.0",
+        "aiohttp>=3.9.0",
+    ],
 ) 

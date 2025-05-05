@@ -2,44 +2,91 @@
 # -*- coding: utf-8 -*-
 
 """
-Exemplo básico de uso do Mangaba.AI
+Exemplo básico de uso do Mangaba.AI com protocolos A2A e MCP
 """
 import asyncio
-import os
-from dotenv import load_dotenv
 from mangaba_ai.main import MangabaAI
-
-# Carrega as variáveis de ambiente
-load_dotenv()
 
 async def main():
     """Função principal do exemplo."""
     try:
-        # Verifica se as chaves de API estão configuradas
-        if not os.getenv("GEMINI_API_KEY"):
-            raise ValueError("GEMINI_API_KEY não configurada no arquivo .env")
+        # Chave de API do Gemini
+        api_key = "AIzaSyCdT2BoS8r3RD0RCO5uSS4UhRB6jgix3PM"
         
         # Inicializa o Mangaba.AI
-        mangaba = MangabaAI()
+        mangaba = MangabaAI(api_key)
         
-        # Define as tarefas a serem executadas
+        # Cria agentes com diferentes papéis
+        researcher = mangaba.create_agent(
+            name="pesquisador",
+            role="Pesquisador",
+            goal="Realizar pesquisas detalhadas sobre tópicos específicos"
+        )
+        
+        analyst = mangaba.create_agent(
+            name="analista",
+            role="Analista",
+            goal="Analisar dados e informações"
+        )
+        
+        writer = mangaba.create_agent(
+            name="escritor",
+            role="Escritor",
+            goal="Escrever relatórios e resumos"
+        )
+        
+        # Demonstra comunicação A2A
+        print("\nDemonstrando comunicação entre agentes (A2A):")
+        
+        # Pesquisador envia mensagem para o analista
+        print("\nPesquisador -> Analista: 'Analise estes dados sobre IA'")
+        await researcher.a2a.send_message(
+            researcher.name,
+            analyst.name,
+            "Analise estes dados sobre IA: [dados de pesquisa]"
+        )
+        
+        # Analista processa a mensagem e responde
+        messages = await analyst.a2a.receive_messages(analyst.name)
+        for msg in messages:
+            print(f"\nAnalista recebeu: {msg['content']}")
+            response = await analyst.execute(msg["content"])
+            print(f"Analista responde: {response}")
+            
+            # Analista envia para o escritor
+            await analyst.a2a.send_message(
+                analyst.name,
+                writer.name,
+                f"Escreva um relatório baseado nesta análise: {response}"
+            )
+        
+        # Escritor processa a mensagem
+        messages = await writer.a2a.receive_messages(writer.name)
+        for msg in messages:
+            print(f"\nEscritor recebeu: {msg['content']}")
+            response = await writer.execute(msg["content"])
+            print(f"Escritor responde: {response}")
+        
+        # Demonstra uso do MCP
+        print("\nDemonstrando fusão de contexto (MCP):")
+        
+        # Executa tarefas sequenciais para demonstrar o contexto
         tasks = [
             {
                 "type": "researcher",
-                "description": "Pesquisar sobre os últimos avanços em IA generativa"
+                "description": "Pesquise sobre os últimos avanços em IA generativa"
             },
             {
                 "type": "analyzer",
-                "description": "Analisar os impactos desses avanços na indústria"
+                "description": "Analise os impactos desses avanços na indústria"
             },
             {
                 "type": "writer",
-                "description": "Escrever um relatório sobre os resultados da análise"
+                "description": "Escreva um relatório sobre os resultados da análise"
             }
         ]
         
-        # Executa as tarefas
-        print("Iniciando execução das tarefas...")
+        print("\nExecutando tarefas sequenciais com contexto:")
         results = await mangaba.execute(tasks)
         
         # Exibe os resultados
@@ -49,8 +96,7 @@ async def main():
             print(f"Resultado: {result}")
             
     except Exception as e:
-        print(f"Erro durante a execução: {str(e)}")
-        raise
+        print(f"Erro: {str(e)}")
 
 if __name__ == "__main__":
     asyncio.run(main()) 

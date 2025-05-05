@@ -1,9 +1,9 @@
 Metadata-Version: 2.4
 Name: mangaba
-Version: 0.1.1
+Version: 0.1.0
 Summary: Framework Python para criacao de equipes de agentes AI autonomos
-Home-page: https://github.com/dheiver2/mangaba_ai
-Author: Dheiver Santos
+Home-page: https://github.com/mangaba-ai/mangaba-ai
+Author: Mangaba.AI Team
 Author-email: Dheiver Santos <dheiver.santos@gmail.com>
 License: MIT
 Project-URL: Homepage, https://github.com/dheiver2/mangaba_ai
@@ -12,168 +12,127 @@ Classifier: Programming Language :: Python :: 3
 Classifier: Programming Language :: Python :: 3.9
 Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
-Requires-Python: >=3.9
+Requires-Python: >=3.8
 Description-Content-Type: text/markdown
+License-File: LICENSE
 Dynamic: author
 Dynamic: home-page
+Dynamic: license-file
 Dynamic: requires-python
 
-[![PyPI version](https://badge.fury.io/py/mangaba.svg)](https://badge.fury.io/py/mangaba)
+<p align="center">
+  <img src="assets/img2.png" width="400" alt="Mangaba.AI logo">
+</p>
 
-# Mangaba - Framework de Automação com Agentes Inteligentes
+<h1 align="center">Mangaba.AI</h1>
+<p align="center"><i>Framework avançado para orquestração de equipes de agentes de IA autônomos.</i></p>
 
-<img src="https://github.com/dheiver2/mangaba_ai/blob/main/img.png" width="300">
+---
 
-Framework Python para criação de equipes de agentes AI autônomos que colaboram para resolver tarefas complexas.
+## Características
 
-## ✨ Funcionalidades Principais
+- Suporte a múltiplos modelos de IA (Gemini, OpenAI, Anthropic)
+- Sistema de agentes autônomos
+- Protocolos de comunicação A2A e MCP
+- Sistema de memória contextual
+- Integrações com plataformas externas (Slack, GitHub, Jira, Discord)
+- Configuração flexível
+- Interface interativa
+- Documentação completa
 
-- **Arquitetura Multi-Agente**: Crie equipes de agentes especializados
-- **Memória Contextual**: Histórico individual e compartilhado entre agentes
-- **Integração Gemini**: Utilize os modelos mais avançados da Google
-- **Ferramentas Externas**: Busca no Google e outras APIs
-- **Gerenciamento de Tarefas**: Dependências e priorização automática
-- **Processamento Assíncrono**: Execução paralela para maior eficiência
+## Instalação
 
-## 🚀 Começando
-
-### Pré-requisitos
-- Python 3.9+
-- Conta no Google AI Studio (para API key do Gemini)
-
-### Instalação
-
-**Método 1: Instalação via pip (mais simples)**
+1. Clone o repositório:
 ```bash
-pip install mangaba
+git clone https://github.com/seu-usuario/mangaba_ai.git
+cd mangaba_ai
 ```
 
-**Método 2: Instalação direta do repositório com pré-instalação**
+2. Instale as dependências:
 ```bash
-git clone https://github.com/dheiver2/mangaba_ai.git
-cd mangaba_ai
-# Execute o script de pré-instalação das dependências (recomendado)
-python setup.py.pre
-# Depois instale o pacote
-pip install .
-```
-
-**Método 3: Instalação com requisitos em lote**
-```bash
-git clone https://github.com/dheiver2/mangaba_ai.git
-cd mangaba_ai
-# Primeiro instale as dependências
 pip install -r requirements.txt
-# Depois instale o pacote
-pip install .
 ```
 
-### Verificação da Instalação
-Para verificar se o Mangaba foi instalado corretamente, execute:
-```python
-import mangaba
-print(mangaba.__version__)  # Deve exibir a versão atual
-```
-
-### Solução de problemas
-
-1. Se encontrar erros sobre dependências, instale-as manualmente:
+3. Execute o assistente de configuração:
 ```bash
-pip install google-generativeai googlesearch-python requests aiohttp tenacity
+python setup.py
 ```
 
-2. Para ambiente Windows com problemas de codificação:
+O assistente irá guiá-lo através de:
+- Configuração de APIs (Gemini, OpenAI, Anthropic)
+  - Guia passo a passo para obter chaves de API
+  - Links diretos para páginas de configuração
+  - Validação de chaves
+- Configuração de Modelos
+  - Configurações padrão otimizadas
+  - Opção para configuração personalizada
+  - Ajustes de parâmetros
+- Configuração de Integrações
+  - Slack, GitHub, Jira, Discord
+  - Guias específicos para cada plataforma
+  - Validação de configurações
+
+## Uso
+
+### Interface Interativa
+
+Para iniciar a interface interativa:
 ```bash
-set PYTHONIOENCODING=utf-8
-pip install mangaba
+python -m mangaba_ai
 ```
 
-3. Em caso de falha na instalação em modo editável:
-```bash
-python setup.py develop
-```
+A interface oferece:
+- Criação de agentes
+- Listagem de agentes existentes
+- Execução de tarefas
+- Configuração de integrações
 
-### Configuração
-1. Obtenha sua API key do Gemini em https://ai.google.dev/
-2. Configure a API em seu código:
-
-```python
-import mangaba
-from mangaba.config import configure_api
-
-# Configure a API com sua chave
-configure_api("sua_chave_aqui")
-```
-
-## 📚 Exemplo de Uso
+### Uso Programático
 
 ```python
-import asyncio
-import mangaba
+from mangaba_ai import MangabaAI
 
-# Configure a API (veja seção de configuração)
+# Inicialize o sistema
+mangaba = MangabaAI()
 
-async def exemplo():
-    # Criação dos agentes
-    memory = mangaba.ContextualMemory()
-    model = mangaba.GeminiModel()
-    search_tool = mangaba.GoogleSearchTool()
+# Crie um agente
+agente = mangaba.criar_agente(
+    nome="pesquisador",
+    papel="Pesquisador de informações",
+    objetivo="Encontrar e analisar informações relevantes"
+)
 
-    pesquisador = mangaba.Agent(
-        name="Pesquisador", 
-        role="Busca dados", 
-        model=model, 
-        tools=[search_tool], 
-        memory=memory
-    )
+# Execute uma tarefa
+resultado = await agente.executar_tarefa(
+    "Pesquisar sobre inteligência artificial"
+)
 
-    # Definição de tarefas
-    tarefa = mangaba.Task(
-        description="Buscar inovações em IA", 
-        agent=pesquisador
-    )
-
-    # Execução
-    equipe = mangaba.Crew(agents=[pesquisador], tasks=[tarefa])
-    await equipe.run()
-    
-    # Resultado
-    print(tarefa.result)
-
-if __name__ == "__main__":
-    asyncio.run(exemplo())
+print(resultado)
 ```
 
-## 🏗 Estrutura do Projeto
+## Documentação
 
-```
-mangaba/
-├── __init__.py        # Exporta as classes principais
-├── config/            # Módulo de configuração
-│   ├── __init__.py
-│   └── api.py         # Funções para configuração da API
-├── core/              # Módulo principal
-│   ├── __init__.py
-│   └── models.py      # Definições das classes principais
-└── cases/             # Casos de uso
-    ├── __init__.py
-    └── cases.py       # Exemplos prontos
-```
+A documentação completa está disponível em `docs/`:
 
-## 🤝 Como Contribuir
+- [Agentes](docs/agents.md)
+- [Tarefas](docs/tasks.md)
+- [Comunicação](docs/communication.md)
+- [Memória](docs/memory.md)
+- [Modelos](docs/models.md)
+- [Fluxo de Trabalho](docs/workflow.md)
+- [Configuração](docs/configuration.md)
 
-1. Faça um fork do projeto
-2. Crie sua branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um Pull Request
+## Exemplos
 
-## 📄 Licença
+Exemplos de uso estão disponíveis em `examples/`:
 
-Distribuído sob licença MIT. Veja `LICENSE` para mais informações.
+- [Sistema Completo](examples/full_system_example.py)
+- [Integrações](examples/platform_integrations/)
 
-## ✉️ Contato
+## Contribuição
 
-Dheiver Santos - [@dheiver](https://github.com/dheiver2) - dheiver.santos@gmail.com
+Contribuições são bem-vindas! Por favor, leia as diretrizes de contribuição em `CONTRIBUTING.md`.
 
-Project Link: [https://github.com/dheiver2/mangaba_ai](https://github.com/dheiver2/mangaba_ai)
+## Licença
+
+Este projeto está licenciado sob a licença MIT - veja o arquivo `LICENSE` para detalhes.
