@@ -11,7 +11,7 @@ async def main():
     """Função principal do exemplo."""
     try:
         # Chave de API do Gemini
-        api_key = "AIzaSyCdT2BoS8r3RD0RCO5uSS4UhRB6jgix3PM"
+        api_key = "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
         
         # Inicializa o Mangaba.AI
         mangaba = MangabaAI(api_key)
